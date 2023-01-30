@@ -20,6 +20,8 @@
 
 .plistTitles>h1{
     font-size: 18px;
+    color: #444;
+    text-transform: capitalize;
 }
 
 .plistTitles>h2{

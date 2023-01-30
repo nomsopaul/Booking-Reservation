@@ -1,22 +1,23 @@
+import { Link } from "react-router-dom"
 import "./searchitem.css"
 
-const SearchItem = () => {
+const SearchItem = ({item}) => {
   return (
     <div className="searchItem">
         <img
-        src="https://media.istockphoto.com/photos/private-jet-picture-id637359998?k=20&m=637359998&s=612x612&w=0&h=6REDfQOOCu_Q1bBqP7HMxB3eOm5OJDcHaqB3e-9_Ipc="
+        src={item.photos[0]}
         alt=""
         className="siImg"
         />
         <div className="siDesc">
-            <h1 className="siTitle">Private Jets Emirates</h1>
-            <span className="siDistance">500m from Location</span>
+            <h1 className="siTitle">{item.name}</h1>
+            <span className="siDistance">{item.distance}</span>
             <span className="siTaxiOp">Free Hostess Service</span>
             <span className="siSubtitle">
                 Private Jet with Top Services
             </span>
             <span className="siFeatures">
-                Entire studio * 1 bathroom * 21m 1 full bed
+                {item.desc}
             </span>
             <span className="siCancelOp">Free Cancellation </span>
             <span className="siCancelOpSubtitle">
@@ -24,18 +25,20 @@ const SearchItem = () => {
             </span>
         </div>
         <div className="siDetails">
-            <div className="siRating">
+            {item.rating && <div className="siRating">
                 <span>Excellent</span>
-                <button>8.9</button>
-            </div>
+                <button>{item.rating}</button>
+            </div>}
             <div className="siDetailsTexts">
-            <span className="siPrice">$123</span>
+            <span className="siPrice">${item.cheapestPrice}</span>
             <span className="siTaxiOp">Includes taxes and fees</span>
+            <Link to={`/flights/${item._id}`}>
             <button className="siCheckButton">See availability</button>
+            </Link>
         </div>
     </div>
     </div>
   )
 }
 
-export default SearchItem
+export default SearchItem;

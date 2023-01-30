@@ -9,33 +9,36 @@ import {
   faLocationDot,
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {useState} from 'react';
+import {useContext, useState} from 'react';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
+import useFetch from "../../hooks/useFetch"
+import { useLocation, useNavigate } from "react-router-dom";
+import { SearchContext } from '../../context/SearchContext';
+import { AuthContext } from '../../context/AuthContext';
+import Reserve from '../../components/reserve/Reserve';
 
 const Hotel = () => {
+  const location = useLocation()
+  const id = location.pathname.split("/")[2];
   const [slideNumber, setSlideNumber] = useState (0);
   const [open, setOpen] = useState (false);
+  const [openModal, setOpenModal] = useState (false);
 
-  const photos = [
-    {
-      src: 'https://bitluxtravel.com/wp-content/uploads/2021/03/emirates-a319-4-1024x683.jpeg',
-    },
-    {
-      src: 'https://bitluxtravel.com/wp-content/uploads/2021/03/emirate-a319-3.jpeg',
-    },
-    {
-      src: 'https://bitluxtravel.com/wp-content/uploads/2021/03/emirates-a319-2.jpeg',
-    },
-    {
-      src: 'https://bitluxtravel.com/wp-content/uploads/2021/03/emirates-a319-1-1024x683.jpeg',
-    },
-    {
-      src: 'https://bitluxtravel.com/wp-content/uploads/2021/03/inside-emirates-a319-private-jet.jpeg',
-    },
-    {
-      src: 'https://bitluxtravel.com/wp-content/uploads/2021/03/emirates-a319-2.jpeg',
-    },
-  ];
+  const { data, loading, error } = useFetch (`/flights/find/${id}`);
+  const {user} = useContext(AuthContext)
+  const navigate = useNavigate()
+
+  const { dates, options } = useContext(SearchContext);
+
+  const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
+  function dayDifference(date1, date2) {
+    const timeDiff = Math.abs(date2.getTime() - date1.getTime());
+    const diffDays = Math.ceil(timeDiff / MILLISECONDS_PER_DAY);
+    return diffDays;
+  }
+
+  const days = (dayDifference(dates[0].endDate, dates[0].startDate))
+
 
   const handleOpen = i => {
     setSlideNumber (i);
@@ -54,11 +57,20 @@ const Hotel = () => {
     setSlideNumber (newSlideNumber);
   };
 
+  const handleClick = () => {
+    if(user){
+      setOpenModal(true);
+    }else{
+      navigate("/login")
+    }
+  };
   return (
     <div>
       <Navbar />
       <Header type="list" />
-      <div className="hotelContainer">
+      {loading ? (
+        "loading" ) : (
+          <div className="hotelContainer">
         {open &&
           <div className="slider">
             <FontAwesomeIcon
@@ -72,7 +84,7 @@ const Hotel = () => {
               onClick={() => handleMove ('l')}
             />
             <div className="sliderWrapper">
-              <img src={photos[slideNumber].src} alt="" className="sliderImg" />
+              <img src={data.photos[slideNumber]} alt="" className="sliderImg" />
             </div>
             <FontAwesomeIcon
               icon={faCircleArrowRight}
@@ -82,23 +94,23 @@ const Hotel = () => {
           </div>}
         <div className="hotelWrapper">
           <button className="bookNow">Reserve or Book Now!</button>
-          <h1 className="hotelTitle">Emirates Jet</h1>
+          <h1 className="hotelTitle">{data.name}</h1>
           <div className="hotelAddress">
             <FontAwesomeIcon icon={faLocationDot} />
-            <span>Elton St 125 New York</span>
+            <span>{data.address}</span>
           </div>
           <span className="hotelDistance">
-            Excellent location - 500m from center
+            Excellent location - {data.distance}m from center
           </span>
           <span className="hotelPriceHighlight">
-            Book a jet over $114 at this rate and get a free service
+            Book a jet over ${data.cheaperstPrice} at this rate and get a free service
           </span>
           <div className="hotelImages">
-            {photos.map ((photo, i) => (
-              <div className="hotelImgWrapper">
+            {data.photos?.map ((photo, i) => (
+              <div className="hotelImgWrapper" key={i}>
                 <img
                   onClick={()=>handleOpen(i)}
-                  src={photo.src}
+                  src={photo}
                   alt=""
                   className="hotelImg"
                 />
@@ -107,33 +119,29 @@ const Hotel = () => {
           </div>
           <div className="hotelDetails">
             <div className="hotelDetailsTexts">
-              <h1 className="hotelTitle">Emirates A319 Private Jet</h1>
+              <h1 className="hotelTitle">{data.title}</h1>
               <p className="hotelDesc">
-                Internationally acclaimed, Emirates represents the largest airline of the United Arab Emirates.
-                Headquartered in Garhoud, Dubai, the airline boasts over 3600 weekly flights from its Dubai International Airport hub.
-                From there Emirates services flights to more than 150 cities spread across 80 countries and six continents.
-                {' '}
-                The company operates a mixed fleet including Boeing wide-body and Airbus aircrafts.
-                Known for luxurious flights accommodating the upscale needs of discerning travelers,its executive lines are engineered to impress.
-                In this expose we take a closer look inside one of their top-of-the-line private jets: the AirBus A319.
+                {data.desc}
               </p>
             </div>
             <div className="hotelDetailsPrice">
-              <h1>Perfect for a nice 9-day vacation!</h1>
+              <h1>Perfect for a nice {days}-day vacation!</h1>
               <span>
                 Located in the real heart of Dubai, this property has an
                 excellent score of 9.8!
               </span>
               <h2>
-                <b>$20000</b> (9 days)
+                <b>${days * data.cheapestPrice * options.room}</b> ({days})
               </h2>
-              <button>Reserve or Book Now!</button>
+              <button onClick={handleClick}>Reserve or Book Now!</button>
             </div>
           </div>
         </div>
         <MailList />
         <Footer />
       </div>
+      )}
+      {openModal && <Reserve setOpen={setOpenModal} flightId={id}/>}
     </div>
   );
 };
