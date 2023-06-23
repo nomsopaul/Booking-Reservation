@@ -1,43 +1,63 @@
-import useFetch from "../../hooks/useFetch";
 import "./jetlist.css";
 
 const JetList = () => {
-
-  const {data, loading, error} = useFetch (
-  '/flights/countByType'
-);
-
-const images = [
-    "https://media.istockphoto.com/photos/picture-of-white-matte-luxury-generic-design-private-jet-parking-picture-id537206872?k=20&m=537206872&s=612x612&w=0&h=AXXzj0x98DgnkxXp4HK0Lt7zz6HKstrdE6t_Z3OtZNQ=",
-    'https://media.istockphoto.com/photos/silver-two-door-sports-car-on-blacktop-picture-id168631817?k=20&m=168631817&s=612x612&w=0&h=dqrmN3lJ09svbWzl8xJ1ppmYY8GXqZKd-7QQwQNGeFc=',
-    'https://media.istockphoto.com/photos/business-couple-entering-taxi-at-airport-picture-id1160783478?k=20&m=1160783478&s=612x612&w=0&h=BgDpu0U4Ft24R-xBQW4_DVtQ-1D_m2ELRUklOkjQEFg=',
-    'https://media.istockphoto.com/photos/close-up-of-black-luggage-and-surgical-mask-picture-id1344386618?k=20&m=1344386618&s=612x612&w=0&h=o-BcCBM2kh3A6vJpR3WFY8pjCzwMb0596NIph6fo8mc=',
-    'https://media.istockphoto.com/photos/modern-townhouse-design-picture-id1393537665?k=20&m=1393537665&s=612x612&w=0&h=2I8RoW3owLu1PondalPEcoOzqkFDnfvfDEZbEi9a_QY='
-];
-
   return (
     <div className="plist">
-      {loading ? (
-        "loading" 
-        ) : (
-          <>
-            {data && 
-            images.map((img,i)=> (
-
-            <div className="plistItem" key={i}>
+      <div className="plistItem">
         <img
-          src={img}
+          src="https://cf.bstatic.com/xdata/images/xphoto/square300/57584488.webp?k=bf724e4e9b9b75480bbe7fc675460a089ba6414fe4693b83ea3fdd8e938832a6&o="
           alt=""
           className="plistImg"
         />
         <div className="plistTitles">
-          <h1>{data[i]?.type}</h1>
-          <p>{data[i]?.count} {data[i]?.type}</p>
+          <h1>Hotels</h1>
+          <h2>233 hotels</h2>
         </div>
       </div>
-        ))}
-      </>
-      )}
+      <div className="plistItem">
+        <img
+          src="https://cf.bstatic.com/static/img/theme-index/carousel_320x240/card-image-apartments_300/9f60235dc09a3ac3f0a93adbc901c61ecd1ce72e.jpg"
+          alt=""
+          className="plistImg"
+        />
+        <div className="plistTitles">
+          <h1>Apartments</h1>
+          <h2>2331 hotels</h2>
+        </div>
+      </div>
+      <div className="plistItem">
+        <img
+          src="https://cf.bstatic.com/static/img/theme-index/carousel_320x240/bg_resorts/6f87c6143fbd51a0bb5d15ca3b9cf84211ab0884.jpg"
+          alt=""
+          className="plistImg"
+        />
+        <div className="plistTitles">
+          <h1>Resorts</h1>
+          <h2>2331 hotels</h2>
+        </div>
+      </div>
+      <div className="plistItem">
+        <img
+          src="https://cf.bstatic.com/static/img/theme-index/carousel_320x240/card-image-villas_300/dd0d7f8202676306a661aa4f0cf1ffab31286211.jpg"
+          alt=""
+          className="plistImg"
+        />
+        <div className="plistTitles">
+          <h1>Villas</h1>
+          <h2>2331 hotels</h2>
+        </div>
+      </div>
+      <div className="plistItem">
+        <img
+          src="https://cf.bstatic.com/static/img/theme-index/carousel_320x240/card-image-chalet_300/8ee014fcc493cb3334e25893a1dee8c6d36ed0ba.jpg"
+          alt=""
+          className="plistImg"
+        />
+        <div className="plistTitles">
+          <h1>Cabins</h1>
+          <h2>2331 hotels</h2>
+        </div>
+      </div>
     </div>
   );
 };

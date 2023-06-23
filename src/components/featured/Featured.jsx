@@ -1,52 +1,42 @@
-import useFetch from '../../hooks/useFetch.js';
-import './featured.css';
+import "./featured.css";
 
 const Featured = () => {
-  const {data, loading, error} = useFetch (
-    '/flights/countByCity?cities=London,Lagos,Ethopia'
-  );
-
   return (
     <div className="featured">
-      {loading ? (
-        "Loading please wait"
-      ) : (
-      <>
       <div className="featuredItem">
         <img
-          src="https://images.unsplash.com/photo-1540962351504-03099e0a754b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8amV0fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60"
+          src="https://cf.bstatic.com/xdata/images/city/max500/957801.webp?k=a969e39bcd40cdcc21786ba92826063e3cb09bf307bcfeac2aa392b838e9b7a5&o="
           alt=""
           className="featuredImg"
         />
         <div className="featuredTitles">
-          <h1>London</h1>
-          <h2>{data[0]} Flights</h2>
+          <h1>Dublin</h1>
+          <h2>123 properties</h2>
         </div>
       </div>
+      
       <div className="featuredItem">
         <img
-          src="https://images.unsplash.com/photo-1540962351504-03099e0a754b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8amV0fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60"
+          src="https://cf.bstatic.com/xdata/images/city/max500/690334.webp?k=b99df435f06a15a1568ddd5f55d239507c0156985577681ab91274f917af6dbb&o="
           alt=""
           className="featuredImg"
         />
         <div className="featuredTitles">
-          <h1>Lagos</h1>
-          <h2>{data[1]} Flights</h2>
+          <h1>Reno</h1>
+          <h2>533 properties</h2>
         </div>
       </div>
       <div className="featuredItem">
         <img
-          src="https://images.unsplash.com/photo-1540962351504-03099e0a754b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8amV0fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60"
+          src="https://cf.bstatic.com/xdata/images/city/max500/689422.webp?k=2595c93e7e067b9ba95f90713f80ba6e5fa88a66e6e55600bd27a5128808fdf2&o="
           alt=""
           className="featuredImg"
         />
         <div className="featuredTitles">
-          <h1>Ethopia</h1>
-          <h2>{data[2]} Flights</h2>
+          <h1>Austin</h1>
+          <h2>532 properties</h2>
         </div>
       </div>
-      </>
-      )}
     </div>
   );
 };
